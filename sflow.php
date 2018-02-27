@@ -5,6 +5,9 @@ $file = fopen("mac-irr", "r");
 echo "defining AS-SETs to MAC matching\n";
 $irrs = array();
 $irrset = array();
+
+#load mac-irr file and create a valiable containing each of the IRR sets. 
+
 while (($line = fgetcsv($file)) !== FALSE){
 	$irrs[$line[0]]=$line[1];
 	$irrset[] = $line[1];
@@ -14,7 +17,7 @@ while (($line = fgetcsv($file)) !== FALSE){
 
 }
 
-#load each of the IRR files
+#echo each of the IRR files we've loaded.
 echo "loading the IRR data into memory. \n loading data for : ( ";
 
 foreach ($irrset as $value) {
@@ -48,9 +51,12 @@ while($f = fgets(STDIN)){
 		if(preg_match("/:/", $f)){
 			#don't support IPv6
 		}else{
+			#bring stdin to array
 		 	$array = array();
 		 	$array = str_getcsv($f);
+				#interface in sflow packet is hard coded here
 				if($array[2] == "36"){
+					#iterate through each MAC address were monitoring
 					foreach ($macs as $mac){
 						if($array[4] == $mac){
 							$b = "file_$mac";
